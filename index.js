@@ -38,7 +38,7 @@ app.get('/api/persons/:id', (request, response) => {
     })
     .catch(error => {
       console.log(error)
-      response.status(500).end()
+      response.status(400).send({ error: 'malformatted id' })
     })
 })
 
@@ -53,11 +53,12 @@ app.get('/info', (req, res) => {
     <h3>${Date(req)}</h3>`)
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter(a => a.id !== id)
-
-  response.status(204).end()
+app.delete('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 
@@ -69,12 +70,7 @@ app.post('/api/persons', (request, response) => {
 
   } else if (body.number===undefined) {
     return response.status(400).json({ error: 'number missing'})
-
-  } else if (persons.find(a => a.name === body.name)) {
-    return response.status(400).json({
-      error: 'name must be unique'
-    })
-  }
+  } 
 
   const person = new Person({
     name: body.name,
@@ -85,33 +81,6 @@ app.post('/api/persons', (request, response) => {
     response.json(savedPerson)
   })
 })
-/*
-app.post('/api/persons', (request, response) => {
-  const body = request.body
-
-  if (!body.name) {
-    return response.status(400).json({
-      error: 'name missing'
-    })
-  } else if (!body.number) {
-    return response.status(400).json({
-      error: 'number missing'
-    })
-  } else if (persons.find(a => a.name === body.name)) {
-    return response.status(400).json({
-      error: 'name must be unique'
-    })
-  }
-  const person = {
-    name: body.name,
-    number: body.number,
-    id: Math.floor(Math.random() * 999999)
-  }
-
-  persons = persons.concat(person)
-  response.json(person)
-})
-*/
 
 const PORT = process.env.PORT
 app.listen((PORT), () => {
