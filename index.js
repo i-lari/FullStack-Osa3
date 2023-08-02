@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 
 const app = express()
-//app.use(express.static('build'))
+app.use(express.static('build'))
 app.use(express.json())
 app.use(cors())
 morgan.token('content', function getContent (req) {

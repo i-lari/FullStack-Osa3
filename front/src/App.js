@@ -114,7 +114,7 @@ const App = () => {
         }).catch(error => {
           setErrorMessage(error.response.data.error)
           setTimeout(()=> {
-            setNotification(null)
+            setErrorMessage(null)
           },5000)
         })
     }
