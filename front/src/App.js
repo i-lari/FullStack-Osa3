@@ -101,7 +101,6 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-
       personService
         .create(numberObject)
         .then(returnedObject => {
@@ -109,6 +108,11 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           setNotification('Added '+ returnedObject.name)
+          setTimeout(()=> {
+            setNotification(null)
+          },5000)
+        }).catch(error => {
+          setErrorMessage(error.response.data.error)
           setTimeout(()=> {
             setNotification(null)
           },5000)
