@@ -66,6 +66,7 @@ const App = () => {
         setPersons(initialPersons)
       })
   }, [])
+  console.log(persons)
 
   const addNumber = (event) => {
     if (persons.map(a => a.name).includes(newName)) {
