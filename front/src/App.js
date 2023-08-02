@@ -12,11 +12,13 @@ const Person = ({ name, number, remove }) => {
 }
 
 const Persons = ({ persons, filter, remove }) => {
+  if(persons) {
   const filteredPersons = persons.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
   const list = filteredPersons.map(a => <Person key={a.name} name={a.name} number={a.number} remove={() => remove(a.id)} />)
   return (
     <div>{list}</div>
   )
+  } else return null
 }
 
 
@@ -66,7 +68,6 @@ const App = () => {
         setPersons(initialPersons)
       })
   }, [])
-  console.log(persons)
 
   const addNumber = (event) => {
     if (persons.map(a => a.name).includes(newName)) {
